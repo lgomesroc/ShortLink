@@ -13,5 +13,12 @@
         </div>
         <button type="submit">Encurtar</button>
     </form>
+
+    @if (session('short_link'))
+        <div>
+            <label for="short_link">URL Encurtada:</label>
+            <input type="text" id="short_link" value="{{ session('short_link') }}" readonly>
+        </div>
+    @endif
 </body>
 </html>

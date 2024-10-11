@@ -1,64 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Shortlink - Encurtador de URLs
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descrição
+Este projeto é um encurtador de URLs simples e eficaz, desenvolvido em PHP utilizando o framework Laravel. Permite aos usuários criar links curtos personalizados e acompanhar suas estatísticas.
 
-## About Laravel
+## Pré-requisitos
+* **PHP:** [Versão]
+* **Composer:** [Versão]
+* **Node.js:** (Se utilizar alguma ferramenta frontend)
+* **Banco de dados: MySQL
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Instalação
+1. **Clonar o repositório:**
+   ```Bash
+   
+   git clone https://github.com/lgomesroc/ShortLink
+   ```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instalar as dependências:
+   ```Bash
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    composer install
+   ```
+    
+## Configurar o banco de dados:
 
-## Learning Laravel
+    Copiar o arquivo .env.example para .env e configurar as credenciais do banco de dados.
+    Rodar as migrações: php artisan migrate
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Iniciar o servidor de desenvolvimento:
+```Bash
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+php artisan serve
+```
 
-## Laravel Sponsors
+# Funcionalidades
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    Criação de links curtos: Permite aos usuários criar links curtos personalizados.
+    Redirecionamento: Redireciona o usuário para o link original quando clica no link curto.
+    Estatísticas: Mostra o número de cliques em cada link.
+    CRUD completo para usuários e shortlinks: Adição, leitura, atualização e exclusão de usuários e links curtos.
+    Autenticação com Laravel Sanctum: Proteção das rotas da API.
+    [Outras funcionalidades implementadas]
 
-### Premium Partners
+# Estrutura do Projeto
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    app: Contém o código principal da aplicação.
+    database: Contém as migrações e seeders do banco de dados.
+    public: Contém os arquivos públicos, como o arquivo index.php.
+    resources: Contém as views, rotas, e outros recursos.
+    routes: Define as rotas da aplicação.
+    storage: Armazena arquivos gerados pela aplicação.
 
-## Contributing
+# Histórico de Versões
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    v1.0.0 (10/10/2024): Versão inicial do projeto.
+        Implementação básica do encurtador de links.
+        Criação do banco de dados e das tabelas.
+        Configuração das rotas e controllers.
+    
+    v1.1.0 (10/10/2024):
+        Adição da funcionalidade de personalização de links curtos.
+        Implementação de validação de URLs.
+        Melhoria da interface do usuário.
+    
+    v1.2.0 (11/10/2024)
 
-## Code of Conduct
+        Implementação do CRUD para API de usuários:
+            GET /users: Listar todos os usuários.
+            POST /users: Criar um novo usuário.
+            GET /users/{id}: Obter detalhes de um usuário específico.
+            PUT /users/{id}: Atualizar um usuário.
+            DELETE /users/{id}: Deletar um usuário.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+        Implementação do CRUD para API de shortlinks:
+            POST /short-links: Criar um novo link curto.
+            GET /short-links/{shortCode}: Obter detalhes de um link curto específico.
+            PUT /short-links/{shortCode}: Atualizar um link curto.
+            DELETE /short-links/{shortCode}: Deletar um link curto.
 
-## Security Vulnerabilities
+        Configuração do Laravel Sanctum para autenticação de API.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+        Ajustes no Kernel.php para incluir middleware de autenticação.
 
-## License
+# Contribuições
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Contribuições são bem-vindas! Para contribuir, por favor, siga estas etapas:
+
+    Fork este repositório.
+    Crie um novo branch para sua feature.
+    Faça suas alterações e commit.
+    Envie um pull request.
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT.
+
+# Autores
+
+    Luciano Rocha - lgomesroc2012@gmail.com

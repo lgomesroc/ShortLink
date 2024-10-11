@@ -1,45 +1,46 @@
+<?php
+
 namespace App\Http\Controllers;
 
-use App\Models\ShortLink;
+use App\Services\ShortLinkService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ShortLinkController extends Controller
 {
+    private $shortLinkService;
+
+    public function __construct(ShortLinkService $shortLinkService)
+    {
+        $this->shortLinkService = $shortLinkService;
+    }
+
     public function store(Request $request)
     {
-        // Validação dos dados da requisição
-        $request->validate([
-            'original_url' => 'required|url',
-        ]);
-
-        // Obtém a URL original da requisição
-        $originalUrl = $request->input('original_url');
-
-        // Gera um código curto único
-        $shortCode = Str::random(6);
-        while (ShortLink::where('short_code', $shortCode)->exists()) {
-            $shortCode = Str::random(6);
-        }
-
-        // Salva o link no banco de dados
-        ShortLink::create([
-            'original_url' => $originalUrl,
-            'short_code' => $shortCode,
-        ]);
-
-        // Retorna o link curto como resposta JSON
-        return response()->json([
-            'short_link' => route('shortlink.show', $shortCode)
-        ]);
+        $shortLink = $this->shortLinkService->createShortLink($request->original_url);
+        $shortUrl = 'https://lu.ro/' . $shortLink->short_code;
+        return response()->json(['short_link' => $shortUrl], 201);
     }
 
     public function show($shortCode)
     {
-        // Busca o link pelo código curto
-        $shortLink = ShortLink::where('short_code', $shortCode)->firstOrFail();
+        $shortLink = $this->shortLinkService->getShortLinkByCode($shortCode);
+        return response()->json($shortLink);
+    }
 
-        // Redireciona para a URL original
-        return redirect($shortLink->original_url);
+    public function update(Request $request, $shortCode)
+    {
+        $shortLink = $this->shortLinkService->getShortLinkByCode($shortCode);
+        $shortLink->original_url = $request->original_url;
+        $shortLink->save();
+
+        return response()->json($shortLink);
+    }
+
+    public function destroy($shortCode)
+    {
+        $shortLink = $this->shortLinkService->getShortLinkByCode($shortCode);
+        $shortLink->delete();
+
+        return response()->json(null, 204);
     }
 }
