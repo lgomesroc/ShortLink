@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Aplicação</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script>
+        // Impede o salvamento de senhas e preenchimento automático
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="password"], input[type="text"]');
+            inputs.forEach(input => {
+                input.setAttribute('autocomplete', 'off');
+                input.setAttribute('autocorrect', 'off');
+                input.setAttribute('autocapitalize', 'off');
+                input.setAttribute('spellcheck', 'false');
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        @yield('content')
+    </div>
+</body>
+</html>

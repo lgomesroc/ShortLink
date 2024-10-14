@@ -3,60 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\PasswordValidationService;
+use App\Services\PasswordUpdateService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    protected $passwordValidationService;
+    protected $passwordUpdateService;
+
+    public function __construct(PasswordValidationService $passwordValidationService, PasswordUpdateService $passwordUpdateService)
     {
-        $users = User::all();
-        return response()->json($users);
+        $this->passwordValidationService = $passwordValidationService;
+        $this->passwordUpdateService = $passwordUpdateService;
     }
 
-    public function store(Request $request)
+    public function updatePassword(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        $validator = $this->passwordValidationService->validatePassword($request->all());
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
 
-        return response()->json($user, 201);
-    }
+        $user = User::where('username', $request->username)->first();
 
-    public function show($id)
-    {
-        $user = User::findOrFail($id);
-        return response()->json($user);
-    }
+        $response = $this->passwordUpdateService->updateUserPassword($user, $request->new_password);
 
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+        if (isset($response['error'])) {
+            return response()->json(['error' => $response['error']], 400);
+        }
 
-        $request->validate([
-            'name' => 'string|max:100',
-            'email' => 'string|email|max:100|unique:users,email,' . $id,
-            'password' => 'string|min:8',
-        ]);
-
-        $user->update($request->all());
-
-        return response()->json($user);
-    }
-
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return response()->json(null, 204);
+        return response()->json(['success' => $response['success']], 200);
     }
 }
